@@ -16,18 +16,27 @@ jobs:
     steps:
       - name: Download [ vs_BuildTools.exe ]
         run: curl -L -o vs_BuildTools.exe https://aka.ms/vs/stable/vs_BuildTools.exe
-      - name: Run BuildTools installation
+      - name: Create layout
         run: |
-          $p = Start-Process -Verb RunAs Administrator -FilePath .\vs_BuildTools.exe -Wait -PassThru -ArgumentList `
-          '--quiet','--wait','--norestart','--nocache',
-          '--add','Microsoft.VisualStudio.Workload.VCTools.x86.x64 ',
-          '--installPath','c:\home\programs\bt4vs',
+          $p = Start-Process -FilePath .\vs_BuildTools.exe -Wait -PassThru -ArgumentList `
+          '--layout','D:\vs2026-layout','--lang','en-US',
+          '--add','Microsoft.VisualStudio.Component.VC.Tools.x86.x64',
+          '--add Microsoft.VisualStudio.Component.Windows11SDK.22621',
+          '--includeRecommended'
+          if ($p.ExitCode -notin 0,3010) { exit $p.ExitCode }
+      - name: Run installation
+        run: |
+          $p = Start-Process -FilePath D:\vs2026-layout\vs_BuildTools.exe -Wait -PassThru -ArgumentList `
+          '--quiet','--wait','--norestart','--noweb',
+          '--installPath','D:\bt4vs',
+          '--add','Microsoft.VisualStudio.Component.VC.Tools.x86.x64',
+          '--add Microsoft.VisualStudio.Component.Windows11SDK.22621',
           '--includeRecommended'
           if ($p.ExitCode -notin 0,3010) { exit $p.ExitCode }
       - name: Create package
         run: |
           New-Item -Path 'artifact' -ItemType Directory
-          Compress-Archive -Path c:\home\programs\bt4vs -D artifact\bt4vs.zip     
+          Compress-Archive -Path D:\bt4vs -D artifact\bt4vs.zip     
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
