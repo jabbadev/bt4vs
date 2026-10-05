@@ -15,5 +15,5 @@ jobs:
         shell: pwsh
     steps:
       - name: Download [ vs_BuildTools.exe ]
-        run: curl -o vs_BuildTools.exe https://aka.ms/vs/stable/vs_BuildTools.exe
+        run: curl -L vs_BuildTools.exe https://aka.ms/vs/stable/vs_BuildTools.exe
 
