@@ -14,8 +14,11 @@ jobs:
       run:
         shell: pwsh
     steps:
+      - name: Download 
+        run: curl -fL --retry 3 -o vs_BuildTools.exe https://aka.ms/vs/stable/vs_BuildTools.exe
+
       - name: Install chocolatey visualstudio2026-workload-vctools package
-        run: choco install visualstudio2026-workload-vctools --package-parameters "--installPath c:\home\programs\bt4vs --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional"
+        run: .\vs_BuildTools.exe --quiet --wait --norestart --nocache --add Microsoft.VisualStudio.Workload.VCTools --installPath c:\home\programs\bt4vs --includeOptional --includeRecommended
 
       - name: Create package
         run: |
