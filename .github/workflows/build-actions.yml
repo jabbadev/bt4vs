@@ -1,0 +1,31 @@
+name:  bt4vs - Portable Build Tools for Visual Studio
+run-name: ${{ github.actor }} Portable Build Tools for Visual Studio.
+on:
+  push:
+    paths:
+        - README.md
+
+jobs:
+  setup:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Install chocolatey visualstudio2026-workload-vctools package
+        run: choco install visualstudio2026-workload-vctools --installPath c:\home\programs\bt4vs --includeOptional
+
+      - name: Create package
+        run: |
+          New-Item -Path 'artifact' -ItemType Directory
+          Compress-Archive -Path c:\home\programs\bt4vs -D artifact\bt4vs.zip
+          
+      - name: Create Release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          tag_name: ${{ github.ref }}
+          name: bt4vs.${{ github.ref }}.zip
+          artifacts: "artifact/bt4vs.zip"
