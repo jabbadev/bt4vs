@@ -15,7 +15,7 @@ jobs:
         shell: pwsh
     steps:
       - name: Install chocolatey visualstudio2026-workload-vctools package
-        run: choco install visualstudio2026-workload-vctools --installPath c:\home\programs\bt4vs --includeOptional
+        run: choco install visualstudio2026-workload-vctools --package-parameters "--installPath c:\home\programs\bt4vs --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional"
 
       - name: Create package
         run: |
