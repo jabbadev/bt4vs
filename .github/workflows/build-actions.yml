@@ -17,7 +17,7 @@ jobs:
       - name: Download [ vs_BuildTools.exe ]
         run: curl -L -o vs_BuildTools.exe https://aka.ms/vs/stable/vs_BuildTools.exe
       - name: Run BuildTools installation
-        run: .\vs_BuildTools.exe --quiet --wait --norestart --nocache --add Microsoft.VisualStudio.Workload.VCTools --installPath c:\\home\\programs\\bt4vs --includeOptional --includeRecommended
+        run: .\vs_BuildTools.exe --quiet --wait --norestart --nocache --add Microsoft.VisualStudio.Workload.VCTools --installPath "c:\home\programs\bt4vs" --includeOptional --includeRecommended
       - name: Create package
         run: |
           New-Item -Path 'artifact' -ItemType Directory
